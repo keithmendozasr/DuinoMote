@@ -20,5 +20,14 @@
     <string name="app_name">DuinoMote</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="rightFastIcon"><![CDATA[>>>]]></string>
+    <string name="rightMedIcon"><![CDATA[>>]]></string>
+    <string name="rightSlowIcon"><![CDATA[>]]></string>
+    <string name="stopBtnLabel">STOP</string>
+    <string name="speedDownBtnLabel">-</string>
+    <string name="speedUpBtnLabel">+</string>
+    <string name="leftSlowIcon"><![CDATA[<]]></string>
+    <string name="leftMedIcon"><![CDATA[<<]]></string>
+    <string name="leftFastIcon"><![CDATA[<<<]]></string>
 
 </resources>
