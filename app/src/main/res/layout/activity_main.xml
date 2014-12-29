@@ -41,7 +41,10 @@
             android:id="@+id/robotIPText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:hint="Enter IP address"
+            android:lines="1"
+            android:maxLines="1" />
 
     </LinearLayout>
 
@@ -50,7 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connect"
-        android:id="@+id/activateSwitch" />
+        android:id="@+id/activateSwitch"
+        android:onClick="onActivateClicked" />
 
     <GridLayout
         android:layout_columnSpan="2"
@@ -59,7 +63,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:useDefaultMargins="true">
+        android:useDefaultMargins="true"
+        android:visibility="invisible"
+        android:id="@+id/controlLayout">
 
         <Button
             android:text="@string/speedUpBtnLabel"

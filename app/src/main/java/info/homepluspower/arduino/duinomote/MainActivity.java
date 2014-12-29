@@ -18,6 +18,10 @@ package info.homepluspower.arduino.duinomote;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.GridLayout;
+import android.widget.Switch;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
     private final static String LogTag = MainActivity.class.getName();
@@ -27,5 +31,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+    }
+
+    //Handle "Connect" being switched
+    public void onActivateClicked(View v)
+    {
+        GridLayout controls = (GridLayout) findViewById(R.id.controlLayout);
+
+        Switch s = (Switch)v;
+        if(s.isChecked()) {
+            controls.setVisibility(View.VISIBLE);
+            ((EditText)findViewById(R.id.robotIPText)).setEnabled(false);
+        }
+        else
+        {
+            controls.setVisibility(View.INVISIBLE);
+            ((EditText)findViewById(R.id.robotIPText)).setEnabled(true);
+        }
     }
 }
