@@ -16,12 +16,8 @@
 
 package info.homepluspower.arduino.duinomote;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.SeekBar;
+import android.os.Bundle;
 
 public class MainActivity extends Activity {
     private final static String LogTag = MainActivity.class.getName();
@@ -32,12 +28,4 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
 }
