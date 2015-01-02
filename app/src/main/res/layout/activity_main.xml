@@ -57,59 +57,41 @@
         android:id="@+id/activateSwitch"
         android:onClick="onActivateClicked" />
 
-    <GridLayout
-        android:layout_columnSpan="2"
-        android:columnCount="7"
-        android:orientation="horizontal"
+    <Button
+        android:text="@string/speedUpBtnLabel"
+        android:id="@+id/speedUpBtn"
+        android:layout_columnSpan="4"
+        android:layout_width="wrap_content"
+        android:layout_column="3"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <Button
+            android:text="@string/stopBtnLabel"
+            android:id="@+id/stopBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <Button
+            android:text="@string/speedDownBtnLabel"
+            android:id="@+id/speedDownBtn"
+        android:layout_row="4"
+        android:layout_columnSpan="4"
+        android:layout_column="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/steerBar"
         android:layout_gravity="center_horizontal"
-        android:useDefaultMargins="true"
-        android:visibility="invisible"
-        android:id="@+id/controlLayout">
-
-        <Button
-            android:text="@string/speedUpBtnLabel"
-            android:id="@+id/speedUpBtn"
-            android:layout_columnSpan="4"
-            android:layout_width="wrap_content"
-            android:layout_column="3" />
-
-        <Button
-            android:text="@string/leftFastIcon"
-            android:id="@+id/leftMaxBtn" />
-
-        <Button
-                android:text="@string/leftMedIcon"
-                android:id="@+id/leftMedBtn" />
-
-        <Button
-                android:text="@string/leftSlowIcon"
-                android:id="@+id/leftSlowBtn" />
-
-        <Button
-                android:text="@string/stopBtnLabel"
-                android:id="@+id/stopBtn" />
-
-        <Button
-                android:text="@string/rightSlowIcon"
-                android:id="@+id/rightSlowBtn" />
-
-        <Button
-                android:text="@string/rightMedIcon"
-                android:id="@+id/rightMedBtn" />
-
-        <Button
-                android:text="@string/rightFastIcon"
-                android:id="@+id/rightFastBtn" />
-
-        <Button
-                android:text="@string/speedDownBtnLabel"
-                android:id="@+id/speedDownBtn"
-            android:layout_row="4"
-            android:layout_columnSpan="4"
-            android:layout_column="3" />
-
-    </GridLayout>
+        android:max="500"
+        android:progress="255"
+        android:splitTrack="false"
+        android:progressDrawable="@android:color/transparent"
+        android:visibility="invisible" />
 
 </LinearLayout>
