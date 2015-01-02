@@ -18,11 +18,13 @@ package info.homepluspower.arduino.duinomote;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.util.Log;
 
 public class MainActivity extends Activity {
     private final static String LogTag = MainActivity.class.getName();
@@ -39,7 +41,26 @@ public class MainActivity extends Activity {
         speedUpBtn      = (Button) findViewById(R.id.speedUpBtn);
         stopBtn         = (Button) findViewById(R.id.stopBtn);
         speedDownBtn    = (Button) findViewById(R.id.speedDownBtn);
+
         steerBar        = (SeekBar) findViewById(R.id.steerBar);
+        steerBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.d(LogTag, "Progress changed to " + Integer.toString(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(LogTag, "onStartTrackingTouch");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(LogTag, "onStopTrackingTouch");
+                seekBar.setProgress(255);
+            }
+        });
+
         robotIPText     = (EditText) findViewById(R.id.robotIPText);
     }
 
