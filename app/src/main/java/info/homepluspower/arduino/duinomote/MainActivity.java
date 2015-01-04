@@ -25,12 +25,15 @@ import android.widget.Switch;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.util.Log;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
     private final static String LogTag = MainActivity.class.getName();
     private Button speedUpBtn, stopBtn, speedDownBtn;
     private SeekBar steerBar;
     private EditText robotIPText;
+    private TextView statusText;
+    private Switch activateSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +41,15 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        speedUpBtn      = (Button) findViewById(R.id.speedUpBtn);
-        stopBtn         = (Button) findViewById(R.id.stopBtn);
-        speedDownBtn    = (Button) findViewById(R.id.speedDownBtn);
+        robotIPText = (EditText) findViewById(R.id.robotIPText);
+        activateSwitch = (Switch) findViewById(R.id.activateSwitch);
 
-        steerBar        = (SeekBar) findViewById(R.id.steerBar);
+        speedUpBtn = (Button) findViewById(R.id.speedUpBtn);
+        stopBtn = (Button) findViewById(R.id.stopBtn);
+        speedDownBtn = (Button) findViewById(R.id.speedDownBtn);
+
+        steerBar = (SeekBar) findViewById(R.id.steerBar);
+        steerBar.setEnabled(false);
         steerBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -64,16 +71,14 @@ public class MainActivity extends Activity {
         robotIPText     = (EditText) findViewById(R.id.robotIPText);
     }
 
-    private void setControlVisibility(boolean visible)
+    private void setControlEnabled(boolean enabled)
     {
-        int visibility = (visible ? View.VISIBLE : View.INVISIBLE);
+        speedUpBtn.setEnabled(enabled);
+        stopBtn.setEnabled(enabled);
+        speedDownBtn.setEnabled(enabled);
+        steerBar.setEnabled(enabled);
 
-        speedUpBtn.setVisibility(visibility);
-        stopBtn.setVisibility(visibility);
-        speedDownBtn.setVisibility(visibility);
-        steerBar.setVisibility(visibility);
-
-        robotIPText.setEnabled(!visible);
+        robotIPText.setEnabled(enabled);
     }
 
     //Handle "Connect" being switched
@@ -81,8 +86,8 @@ public class MainActivity extends Activity {
     {
         Switch s = (Switch)v;
         if(s.isChecked())
-            setControlVisibility(true);
+            setControlEnabled(true);
         else
-            setControlVisibility(false);
+            setControlEnabled(false);
     }
 }

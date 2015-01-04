@@ -50,28 +50,40 @@
     </LinearLayout>
 
 
-    <Switch
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connect"
-        android:id="@+id/activateSwitch"
-        android:onClick="onActivateClicked" />
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connection"
+            android:layout_gravity="center_horizontal"
+            android:paddingRight="5dp" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect"
+            android:id="@+id/activateSwitch"
+            android:onClick="onActivateClicked" />
+    </LinearLayout>
 
     <Button
         android:text="@string/speedUpBtnLabel"
         android:id="@+id/speedUpBtn"
-        android:layout_columnSpan="4"
         android:layout_width="wrap_content"
-        android:layout_column="3"
         android:layout_height="wrap_content"
-        android:visibility="invisible" />
+        android:enabled="false" />
 
     <Button
             android:text="@string/stopBtnLabel"
             android:id="@+id/stopBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible" />
+        android:enabled="false" />
 
     <Button
             android:text="@string/speedDownBtnLabel"
@@ -81,7 +93,7 @@
         android:layout_column="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible" />
+        android:enabled="false" />
 
     <SeekBar
         android:layout_width="match_parent"
@@ -91,7 +103,6 @@
         android:max="500"
         android:progress="255"
         android:splitTrack="false"
-        android:progressDrawable="@android:color/transparent"
-        android:visibility="invisible" />
+        android:progressDrawable="@android:color/transparent" />
 
 </LinearLayout>
