@@ -17,6 +17,8 @@
 package info.homepluspower.arduino.duinomote;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,9 +41,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(LogTag, "onCreate called");
+
         setContentView(R.layout.activity_main);
 
         robotIPText = (EditText) findViewById(R.id.robotIPText);
+        statusText = (TextView) findViewById(R.id.statusText);
         activateSwitch = (Switch) findViewById(R.id.activateSwitch);
 
         speedUpBtn = (Button) findViewById(R.id.speedUpBtn);
@@ -68,7 +73,6 @@ public class MainActivity extends Activity {
             }
         });
 
-        robotIPText     = (EditText) findViewById(R.id.robotIPText);
     }
 
     private void setControlEnabled(boolean enabled)
@@ -89,5 +93,37 @@ public class MainActivity extends Activity {
             setControlEnabled(true);
         else
             setControlEnabled(false);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Log.d(LogTag, "onResume");
+
+        //Check if WIFI exists
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(cm.getActiveNetworkInfo().getType() != ConnectivityManager.TYPE_WIFI)
+        {
+            statusText.setText("Not on WIFI connection");
+            robotIPText.setEnabled(false);
+            activateSwitch.setEnabled(false);
+            setControlEnabled(false);
+        }
+        else
+        {
+            statusText.setText(getString(R.string.NotConnectedStatus));
+            robotIPText.setEnabled(true);
+            activateSwitch.setEnabled(true);
+            activateSwitch.setChecked(false);
+            setControlEnabled(false);
+        }
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        Log.d(LogTag, "onPause");
     }
 }
