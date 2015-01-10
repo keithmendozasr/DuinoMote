@@ -116,7 +116,9 @@
         android:max="500"
         android:progress="255"
         android:splitTrack="false"
-        android:progressDrawable="@android:color/transparent" />
+        android:progressDrawable="@android:color/transparent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
     <TextView
         android:layout_width="fill_parent"
