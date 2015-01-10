@@ -17,7 +17,7 @@
 
 <resources>
 
-    <string name="app_name">DuinoMote</string>
+    <string name="app_name">Mendoza Bot</string>
     <string name="rightFastIcon"><![CDATA[>>>]]></string>
     <string name="rightMedIcon"><![CDATA[>>]]></string>
     <string name="rightSlowIcon"><![CDATA[>]]></string>

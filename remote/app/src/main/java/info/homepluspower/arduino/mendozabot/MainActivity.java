@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package info.homepluspower.arduino.duinomote;
+package info.homepluspower.arduino.mendozabot;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -33,8 +31,6 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.security.InvalidParameterException;
 
 import 	android.os.AsyncTask;
 

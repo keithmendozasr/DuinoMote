@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package info.homepluspower.arduino.duinomote;
+package info.homepluspower.arduino.mendozabot;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
