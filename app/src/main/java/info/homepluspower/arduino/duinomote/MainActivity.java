@@ -30,8 +30,9 @@ import android.util.Log;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+
     private final static String LogTag = MainActivity.class.getName();
-    private Button speedUpBtn, stopBtn, speedDownBtn;
+    private Button forwardBtn, stopBtn, reverseBtn;
     private SeekBar steerBar;
     private EditText robotIPText;
     private TextView statusText;
@@ -49,9 +50,9 @@ public class MainActivity extends Activity {
         statusText = (TextView) findViewById(R.id.statusText);
         activateSwitch = (Switch) findViewById(R.id.activateSwitch);
 
-        speedUpBtn = (Button) findViewById(R.id.speedUpBtn);
+        forwardBtn = (Button) findViewById(R.id.forwardBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
-        speedDownBtn = (Button) findViewById(R.id.speedDownBtn);
+        reverseBtn = (Button) findViewById(R.id.reverseBtn);
 
         steerBar = (SeekBar) findViewById(R.id.steerBar);
         steerBar.setEnabled(false);
@@ -77,9 +78,9 @@ public class MainActivity extends Activity {
 
     private void setControlEnabled(boolean enabled)
     {
-        speedUpBtn.setEnabled(enabled);
+        forwardBtn.setEnabled(enabled);
         stopBtn.setEnabled(enabled);
-        speedDownBtn.setEnabled(enabled);
+        reverseBtn.setEnabled(enabled);
         steerBar.setEnabled(enabled);
 
         robotIPText.setEnabled(enabled);

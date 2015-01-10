@@ -61,39 +61,52 @@
             android:layout_height="wrap_content"
             android:text="Connection"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp" />
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
 
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Connect"
             android:id="@+id/activateSwitch"
-            android:onClick="onActivateClicked" />
+            android:onClick="onActivateClicked"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
     </LinearLayout>
 
     <Button
-        android:text="@string/speedUpBtnLabel"
-        android:id="@+id/speedUpBtn"
+        android:text="@string/forwardBtnLabel"
+        android:id="@+id/forwardBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="false" />
+        android:enabled="false"
+        android:onClick="buttonClick"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
     <Button
             android:text="@string/stopBtnLabel"
             android:id="@+id/stopBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="false" />
+        android:enabled="false"
+        android:onClick="buttonClick"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
     <Button
-            android:text="@string/speedDownBtnLabel"
-            android:id="@+id/speedDownBtn"
+            android:text="@string/reverseBtnLabel"
+            android:id="@+id/reverseBtn"
         android:layout_row="4"
         android:layout_columnSpan="4"
         android:layout_column="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="false" />
+        android:enabled="false"
+        android:onClick="buttonClick"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 
     <SeekBar
         android:layout_width="match_parent"
