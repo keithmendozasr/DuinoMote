@@ -1,20 +1,44 @@
+.PHONY: build makelinks upload
+
 # CXX=avr-gcc
 AVR_BASE=/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin
 CXX=$(AVR_BASE)/avr-g++
 CPP=$(AVR_BASE)/avr-gcc
-INSTALL_DIR=/Applications/Arduino.app/Contents/Resources/Java
-ARDUINO_BASE_LIB=$(INSTALL_DIR)/libraries
+ARDUINO_BASE=/Applications/Arduino.app/Contents/Resources/Java
+ARDUINO_LIB=$(ARDUINO_BASE)/libraries
+
+ARDUINO_CORE_DIR=$(ARDUINO_BASE)/hardware/arduino/cores/arduino/
+ARDUINO_CORE_FILES=\
+	$(ARDUINO_CORE_DIR)/HardwareSerial.cpp \
+	$(ARDUINO_CORE_DIR)/IPAddress.cpp \
+	$(ARDUINO_CORE_DIR)/Print.cpp \
+	$(ARDUINO_CORE_DIR)/wiring.c \
+	$(ARDUINO_CORE_DIR)/wiring_digital.c \
+	$(ARDUINO_LIB)/WiFi/WiFi.cpp \
+	$(ARDUINO_LIB)/WiFi/WiFiClient.cpp \
+	$(ARDUINO_LIB)/WiFi/WiFiServer.cpp \
+	$(ARDUINO_LIB)/Wire/Wire.cpp \
+	$(ARDUINO_LIB)/WiFi/utility/server_drv.cpp \
+	$(ARDUINO_LIB)/WiFi/utility/socket.c \
+	$(ARDUINO_LIB)/WiFi/utility/spi_drv.cpp \
+	$(ARDUINO_LIB)/Wire/utility/twi.c \
+	$(ARDUINO_LIB)/WiFi/utility/wifi_drv.cpp \
+
+MOTOR_SHIELD_DIR=/Users/kmendoza/Documents/Arduino/libraries/Adafruit_Motor_Shield/
+MOTOR_SHIELD_FILES=\
+	$(MOTOR_SHIELD_DIR)/Adafruit_MotorShield.cpp \
+	$(MOTOR_SHIELD_DIR)/utility/Adafruit_PWMServoDriver.cpp
 
 INCLUDE=-I ./ \
-    -I $(INSTALL_DIR)/hardware/arduino/cores/arduino \
-    -I $(INSTALL_DIR)/hardware/arduino/variants/standard \
-    -I $(ARDUINO_BASE_LIB)/WiFi \
-    -I $(ARDUINO_BASE_LIB)/WiFi/utility \
-    -I $(ARDUINO_BASE_LIB)/Wire \
-    -I $(ARDUINO_BASE_LIB)/Wire/utility \
-    -I ~/Documents/Arduino/libraries/Adafruit_Motor_Shield \
-    -I ~/Documents/Arduino/libraries/Adafruit_Motor_Shield/utility \
-    -I $(ARDUINO_BASE_LIB)/SPI
+	-I $(ARDUINO_CORE_DIR) \
+	-I $(ARDUINO_BASE)/hardware/arduino/variants/standard \
+	-I $(ARDUINO_LIB)/WiFi \
+	-I $(ARDUINO_LIB)/WiFi/utility \
+	-I $(ARDUINO_LIB)/Wire \
+	-I $(ARDUINO_LIB)/Wire/utility \
+	-I $(ARDUINO_LIB)/SPI \
+	-I $(MOTOR_SHIELD_DIR) \
+	-I $(MOTOR_SHIELD_DIR)/utility
 
 LIBS= -lm
 MCU=-mmcu=atmega328p
@@ -30,16 +54,21 @@ endif
 
 default: build upload
 
-build: duinobot.eep duinobot.hex
+build: makelinks
+build: mendozabot.eep mendozabot.hex
 
-duinobot.eep: duinobot.elf
+makelinks:
+	- ln -s $(ARDUINO_CORE_FILES) $(MOTOR_SHIELD_FILES) ./
+
+mendozabot.eep: mendozabot.elf
 	$(AVR_BASE)/avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 $< $@
 
-duinobot.hex: duinobot.elf
+mendozabot.hex: mendozabot.elf
 	$(AVR_BASE)/avr-objcopy -O ihex -R .eeprom $< $@
 
-OBJECTS=Print.o HardwareSerial.o socket.o WiFi.o WiFiServer.o WiFiClient.o IPAddress.o server_drv.o wifi_drv.o spi_drv.o Wire.o twi.o Adafruit_MotorShield.o Adafruit_PWMServoDriver.o duinobot.o wiring.o wiring_digital.o
-duinobot.elf: $(OBJECTS)
+ARDUINO_OBJECTS=Print.o HardwareSerial.o socket.o WiFi.o WiFiServer.o WiFiClient.o IPAddress.o server_drv.o wifi_drv.o spi_drv.o Wire.o twi.o Adafruit_MotorShield.o Adafruit_PWMServoDriver.o wiring.o wiring_digital.o
+
+mendozabot.elf: $(ARDUINO_OBJECTS) mendozabot.o
 	$(CPP) -Os -Wl,--gc-sections -mmcu=atmega328p $^ -o $@ $(LIBS)
 
 upload:
@@ -47,9 +76,11 @@ upload:
 
 clean:
 	@echo -n Cleaning ...
-	$(shell rm duinobot.elf 2> /dev/null)
-	$(shell rm duinobot.hex 2> /dev/null)
-	$(shell rm *.o 2> /dev/null)
+	$(shell rm mendozabot.elf 2> /dev/null)
+	$(shell rm mendozabot.hex 2> /dev/null)
+	$(shell rm *.o *.d 2> /dev/null)
+	$(shell find . -type l -name \\*.c -delete)
+	$(shell find . -type l -name \\*.cpp -delete)
 	@echo " done"
 
 %.o: %.cpp
