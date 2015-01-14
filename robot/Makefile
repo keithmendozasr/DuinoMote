@@ -49,35 +49,37 @@ OSTYPE=$(shell uname)
 ifeq ($(OSTYPE),Linux)
 	PORT=/dev/ttyACM0
 else ifeq ($(OSTYPE),Darwin)
-	PORT=/dev/tty.usbmodem1411
+	PORT=$(PORT)
 endif
+
+PROGNAME=mendozabot
 
 default: build upload
 
 build: makelinks
-build: mendozabot.eep mendozabot.hex
+build: $(PROGNAME).eep $(PROGNAME).hex
 
 makelinks:
 	- ln -s $(ARDUINO_CORE_FILES) $(MOTOR_SHIELD_FILES) ./
 
-mendozabot.eep: mendozabot.elf
+$(PROGNAME).eep: $(PROGNAME).elf
 	$(AVR_BASE)/avr-objcopy -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 $< $@
 
-mendozabot.hex: mendozabot.elf
+$(PROGNAME).hex: $(PROGNAME).elf
 	$(AVR_BASE)/avr-objcopy -O ihex -R .eeprom $< $@
 
 ARDUINO_OBJECTS=Print.o HardwareSerial.o socket.o WiFi.o WiFiServer.o WiFiClient.o IPAddress.o server_drv.o wifi_drv.o spi_drv.o Wire.o twi.o Adafruit_MotorShield.o Adafruit_PWMServoDriver.o wiring.o wiring_digital.o
 
-mendozabot.elf: $(ARDUINO_OBJECTS) mendozabot.o
+$(PROGNAME).elf: $(ARDUINO_OBJECTS) mendozabot.o
 	$(CPP) -Os -Wl,--gc-sections -mmcu=atmega328p $^ -o $@ $(LIBS)
 
 upload:
-	$(AVR_BASE)/avrdude -V -F -patmega328p -c arduino -b 115200 -D -Uflash:w:duinobot.hex:i -P$(PORT) -C /Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/etc/avrdude.conf
+	$(AVR_BASE)/avrdude -V -F -patmega328p -c arduino -b 115200 -D -Uflash:w:$(PROGNAME).hex:i -P$(PORT) -C /Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/etc/avrdude.conf
 
 clean:
 	@echo -n Cleaning ...
-	$(shell rm mendozabot.elf 2> /dev/null)
-	$(shell rm mendozabot.hex 2> /dev/null)
+	$(shell rm $(PROGNAME).elf 2> /dev/null)
+	$(shell rm $(PROGNAME).hex 2> /dev/null)
 	$(shell rm *.o *.d 2> /dev/null)
 	$(shell find . -type l -name \\*.c -delete)
 	$(shell find . -type l -name \\*.cpp -delete)
