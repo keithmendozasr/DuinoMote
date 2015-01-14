@@ -45,9 +45,12 @@ void connect()
         status = WiFi.begin((char *)ssid, (char *)pass);
     }
     digitalWrite(9, LOW);
+    Serial.println("Connected");
 }
 
 void setup() {
+    Serial.begin(9600);
+
     connect();
     AFMS.begin();  // create with the default frequency 1.6KHz
 
@@ -81,12 +84,15 @@ int main()
         WiFiClient client = server.available();
         if(client)
         {
+            Serial.println("Got client");
             uint8_t dir = RELEASE;
             while(client.connected())
             {
                 if(client.available())
                 {
                     char c = client.read();
+                    Serial.print("Got data: ");
+                    Serial.println(c);
                     switch(c)
                     {
                     case 'i':
@@ -115,6 +121,7 @@ int main()
                 }
             }
 
+            Serial.println("Lost client");
             client.stop();    
             leftMotor->run(RELEASE);
             rightMotor->run(RELEASE);
