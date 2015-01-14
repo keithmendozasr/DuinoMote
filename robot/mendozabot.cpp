@@ -77,15 +77,17 @@ int main()
 
     WiFiServer server(80);
     server.begin();
-    bool isUp = false;
     while(1)
     {
-        digitalWrite(9, isUp ? HIGH : LOW);
         WiFiClient client = server.available();
         if(client)
         {
             Serial.println("Got client");
             uint8_t dir = RELEASE;
+            uint8_t speed = 100;
+            leftMotor->setSpeed(speed);
+            rightMotor->setSpeed(speed);
+
             while(client.connected())
             {
                 if(client.available())
@@ -116,6 +118,24 @@ int main()
                     case 's':
                         leftMotor->run(RELEASE);
                         rightMotor->run(RELEASE);
+                        speed=100;
+                        dir = RELEASE;
+                        break;
+                    case 'u':
+                        if(speed<150 && dir != RELEASE)
+                        {
+                            speed+=10;
+                            leftMotor->setSpeed(speed);
+                            rightMotor->setSpeed(speed);
+                        }
+                        break;
+                    case 'd':
+                        if(speed > 100 && dir != RELEASE)
+                        {
+                            speed-=10;
+                            leftMotor->setSpeed(speed);
+                            rightMotor->setSpeed(speed);
+                        }
                         break;
                     }
                 }
