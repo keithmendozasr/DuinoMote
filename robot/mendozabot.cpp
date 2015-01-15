@@ -75,7 +75,7 @@ int main()
     init();
     setup();
 
-    WiFiServer server(80);
+    WiFiServer server(8888);
     server.begin();
     while(1)
     {

@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
                 if(socket == null || socket.isClosed())
                     socket = new Socket();
 
-                socket.connect(new InetSocketAddress(params[0], 80));
+                socket.connect(new InetSocketAddress(params[0], 8888));
             }
             catch(IOException e)
             {
