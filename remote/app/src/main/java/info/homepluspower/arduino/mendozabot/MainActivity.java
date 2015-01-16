@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.RadioButton;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -37,11 +38,12 @@ import 	android.os.AsyncTask;
 public class MainActivity extends Activity {
 
     private final static String LogTag = MainActivity.class.getName();
-    private Button forwardBtn, stopBtn, reverseBtn;
+    private Button speedUpBtn, stopBtn, speedDnBtn;
     private SeekBar steerBar;
     private EditText robotIPText;
     private TextView statusText;
     private Switch activateSwitch;
+    private RadioButton forwardBtn, reverseBtn;
     private Socket socket = null;
     private char dir;
 
@@ -72,9 +74,11 @@ public class MainActivity extends Activity {
         statusText = (TextView) findViewById(R.id.statusText);
         activateSwitch = (Switch) findViewById(R.id.activateSwitch);
 
-        forwardBtn = (Button) findViewById(R.id.forwardBtn);
+        speedUpBtn = (Button) findViewById(R.id.speedUpBtn);
         stopBtn = (Button) findViewById(R.id.stopBtn);
-        reverseBtn = (Button) findViewById(R.id.reverseBtn);
+        speedDnBtn = (Button) findViewById(R.id.speedDnBtn);
+        forwardBtn = (RadioButton) findViewById(R.id.forwardBtn);
+        reverseBtn = (RadioButton) findViewById(R.id.reverseBtn);
 
         steerBar = (SeekBar) findViewById(R.id.steerBar);
         steerBar.setEnabled(false);
@@ -110,10 +114,16 @@ public class MainActivity extends Activity {
 
     private void setControlEnabled(boolean enabled)
     {
-        forwardBtn.setEnabled(enabled);
+        speedUpBtn.setEnabled(enabled);
         stopBtn.setEnabled(enabled);
-        reverseBtn.setEnabled(enabled);
+        speedDnBtn.setEnabled(enabled);
         steerBar.setEnabled(enabled);
+
+        forwardBtn.setEnabled(enabled);
+        forwardBtn.setChecked(false);
+
+        reverseBtn.setEnabled(enabled);
+        reverseBtn.setChecked(false);
 
         robotIPText.setEnabled(!enabled);
     }
@@ -248,14 +258,22 @@ public class MainActivity extends Activity {
         switch (v.getId()) {
             case R.id.forwardBtn:
                 dir = 'i';
+                sendMessage(dir);
                 break;
             case R.id.reverseBtn:
                 dir = 'm';
+                sendMessage(dir);
                 break;
             case R.id.stopBtn:
                 dir = 's';
+                sendMessage(dir);
+                break;
+            case R.id.speedUpBtn:
+                sendMessage('u');
+                break;
+            case R.id.speedDnBtn:
+                sendMessage('d');
                 break;
         }
-        sendMessage(dir);
     }
 }

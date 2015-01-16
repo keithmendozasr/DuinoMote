@@ -28,5 +28,7 @@
     <string name="leftMedIcon"><![CDATA[<<]]></string>
     <string name="leftFastIcon"><![CDATA[<<<]]></string>
     <string name="NotConnectedStatus">Enter Robot\'s IP address then turn connection on</string>
+    <string name="speedUpBtnLabel">SP UP</string>
+    <string name="spDnBtnLbl">SP DN</string>
 
 </resources>
