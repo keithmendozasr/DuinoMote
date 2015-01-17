@@ -18,15 +18,9 @@
 <resources>
 
     <string name="app_name">Mendoza Bot</string>
-    <string name="rightFastIcon"><![CDATA[>>>]]></string>
-    <string name="rightMedIcon"><![CDATA[>>]]></string>
-    <string name="rightSlowIcon"><![CDATA[>]]></string>
     <string name="stopBtnLabel">STOP</string>
     <string name="forwardBtnLabel">FORWARD</string>
     <string name="reverseBtnLabel">REVERSE</string>
-    <string name="leftSlowIcon"><![CDATA[<]]></string>
-    <string name="leftMedIcon"><![CDATA[<<]]></string>
-    <string name="leftFastIcon"><![CDATA[<<<]]></string>
     <string name="NotConnectedStatus">Enter Robot\'s IP address then turn connection on</string>
     <string name="speedUpBtnLabel">SP UP</string>
     <string name="spDnBtnLbl">SP DN</string>
