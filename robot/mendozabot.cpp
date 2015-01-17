@@ -53,21 +53,6 @@ void setup() {
 
     connect();
     AFMS.begin();  // create with the default frequency 1.6KHz
-
-    // Set the speed to start, from 0 (off) to 255 (max speed)
-    leftMotor->setSpeed(100);
-    rightMotor->setSpeed(100);
-
-    rightMotor->run(FORWARD);
-    leftMotor->run(FORWARD);
-    delay(125);
-
-    rightMotor->run(BACKWARD);
-    leftMotor->run(BACKWARD);
-    delay(125);
-
-    rightMotor->run(RELEASE);
-    leftMotor->run(RELEASE);
 }
 
 int main() 
