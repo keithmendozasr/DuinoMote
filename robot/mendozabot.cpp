@@ -30,7 +30,7 @@ Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
 //Right wheel
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(4);
 
-void connect()
+static inline void connect()
 {
     static const char ssid[] = "<ENTER SSID>";
     static const char pass[] = "<ENTER PASS>";
@@ -48,7 +48,7 @@ void connect()
     Serial.println("Connected");
 }
 
-void setup() {
+inline void setup() {
     Serial.begin(9600);
 
     connect();
