@@ -55,7 +55,80 @@ void setup() {
     AFMS.begin();  // create with the default frequency 1.6KHz
 }
 
-int main() 
+static inline void handleClient(WiFiServer &server)
+{
+    WiFiClient client = server.available();
+    if(client)
+    {
+        Serial.println("Got client");
+        uint8_t dir = RELEASE;
+        uint8_t speed = 100;
+        leftMotor->setSpeed(speed);
+        rightMotor->setSpeed(speed);
+
+        while(client.connected())
+        {
+            if(client.available())
+            {
+                char c = client.read();
+                Serial.print("Got data: ");
+                Serial.println(c);
+                switch(c)
+                {
+                case 'i':
+                    dir = FORWARD;
+                    leftMotor->run(dir);
+                    rightMotor->run(dir);
+                    break;
+                case 'j':
+                    leftMotor->run(RELEASE);
+                    rightMotor->run(dir != RELEASE ? dir : FORWARD);
+                    break;
+                case 'k':
+                    leftMotor->run(dir != RELEASE ? dir : FORWARD);
+                    rightMotor->run(RELEASE);
+                    break;
+                case 'm':
+                    dir = BACKWARD;
+                    leftMotor->run(dir);
+                    rightMotor->run(dir);
+                    break;
+                case 's':
+                    leftMotor->run(RELEASE);
+                    rightMotor->run(RELEASE);
+                    speed=100;
+                    dir = RELEASE;
+                    break;
+                case 'u':
+                    if(speed<150 && dir != RELEASE)
+                    {
+                        speed+=10;
+                        leftMotor->setSpeed(speed);
+                        rightMotor->setSpeed(speed);
+                    }
+                    break;
+                case 'd':
+                    if(speed > 100 && dir != RELEASE)
+                    {
+                        speed-=10;
+                        leftMotor->setSpeed(speed);
+                        rightMotor->setSpeed(speed);
+                    }
+                    break;
+                }
+            }
+        }
+
+        Serial.println("Lost client");
+        client.stop();
+        leftMotor->run(RELEASE);
+        rightMotor->run(RELEASE);
+    }
+    else
+        Serial.println("No client at this time");
+}
+
+int main()
 {
     init();
     setup();
@@ -64,72 +137,10 @@ int main()
     server.begin();
     while(1)
     {
-        WiFiClient client = server.available();
-        if(client)
-        {
-            Serial.println("Got client");
-            uint8_t dir = RELEASE;
-            uint8_t speed = 100;
-            leftMotor->setSpeed(speed);
-            rightMotor->setSpeed(speed);
-
-            while(client.connected())
-            {
-                if(client.available())
-                {
-                    char c = client.read();
-                    Serial.print("Got data: ");
-                    Serial.println(c);
-                    switch(c)
-                    {
-                    case 'i':
-                        dir = FORWARD;
-                        leftMotor->run(dir);
-                        rightMotor->run(dir);
-                        break;
-                    case 'j':
-                        leftMotor->run(RELEASE);
-                        rightMotor->run(dir != RELEASE ? dir : FORWARD);
-                        break;
-                    case 'k':
-                        leftMotor->run(dir != RELEASE ? dir : FORWARD);
-                        rightMotor->run(RELEASE);
-                        break;
-                    case 'm':
-                        dir = BACKWARD;
-                        leftMotor->run(dir);
-                        rightMotor->run(dir);
-                        break;
-                    case 's':
-                        leftMotor->run(RELEASE);
-                        rightMotor->run(RELEASE);
-                        speed=100;
-                        dir = RELEASE;
-                        break;
-                    case 'u':
-                        if(speed<150 && dir != RELEASE)
-                        {
-                            speed+=10;
-                            leftMotor->setSpeed(speed);
-                            rightMotor->setSpeed(speed);
-                        }
-                        break;
-                    case 'd':
-                        if(speed > 100 && dir != RELEASE)
-                        {
-                            speed-=10;
-                            leftMotor->setSpeed(speed);
-                            rightMotor->setSpeed(speed);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            Serial.println("Lost client");
-            client.stop();    
-            leftMotor->run(RELEASE);
-            rightMotor->run(RELEASE);
-        }
+        handleClient(server);
+        if(WiFi.status() != WL_CONNECTED)
+            connect();
+        else
+            Serial.println("Still connected");
     }
 }
