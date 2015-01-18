@@ -20,6 +20,9 @@
 
 #include <Adafruit_MotorShield.h>
 
+#define RED 2
+#define GREEN 3
+#define BLUE 4
 
 //Hard-lined address 1
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x61); 
@@ -30,29 +33,51 @@ Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
 //Right wheel
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(4);
 
+static inline void changeLights(char i)
+{
+    if(i == RED)
+        digitalWrite(RED, HIGH);
+    else
+        digitalWrite(RED, LOW);
+    
+    if(i == GREEN)
+        digitalWrite(GREEN, HIGH);
+    else
+        digitalWrite(GREEN, LOW);
+
+    if(i == BLUE)
+        digitalWrite(BLUE, HIGH);
+    else
+        digitalWrite(BLUE, LOW);
+}
+
 static inline void connect()
 {
     static const char ssid[] = "<ENTER SSID>";
     static const char pass[] = "<ENTER PASS>";
 
     Serial.println("Connecting");
-    pinMode(9, OUTPUT);
-    digitalWrite(9, HIGH);
+    changeLights(RED);
     uint8_t status = WiFi.begin((char *)ssid, (char *)pass);
     while(status != WL_CONNECTED)
     {
         delay(10000);
         status = WiFi.begin((char *)ssid, (char *)pass);
     }
-    digitalWrite(9, LOW);
-    Serial.println("Connected");
+    changeLights(GREEN);
+    Serial.print("Connected. IP Address: ");
+    Serial.println(WiFi.localIP());
 }
 
 inline void setup() {
     Serial.begin(9600);
 
+    pinMode(RED, OUTPUT);
+    pinMode(GREEN, OUTPUT);
+    pinMode(BLUE, OUTPUT);
+
     connect();
-    AFMS.begin();  // create with the default frequency 1.6KHz
+    AFMS.begin();
 }
 
 static inline void handleClient(WiFiServer &server)
@@ -65,7 +90,7 @@ static inline void handleClient(WiFiServer &server)
         uint8_t speed = 100;
         leftMotor->setSpeed(speed);
         rightMotor->setSpeed(speed);
-
+        changeLights(BLUE);
         while(client.connected())
         {
             if(client.available())
@@ -119,13 +144,12 @@ static inline void handleClient(WiFiServer &server)
             }
         }
 
+        changeLights(GREEN);
         Serial.println("Lost client");
         client.stop();
         leftMotor->run(RELEASE);
         rightMotor->run(RELEASE);
     }
-    else
-        Serial.println("No client at this time");
 }
 
 int main()
@@ -140,7 +164,5 @@ int main()
         handleClient(server);
         if(WiFi.status() != WL_CONNECTED)
             connect();
-        else
-            Serial.println("Still connected");
     }
 }
