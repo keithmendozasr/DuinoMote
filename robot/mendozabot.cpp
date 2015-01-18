@@ -58,6 +58,7 @@ static inline void connect()
 
     Serial.println("Connecting");
     changeLights(RED);
+    WiFi.config(IPAddress(<ENTER YOURS HERE>);
     uint8_t status = WiFi.begin((char *)ssid, (char *)pass);
     while(status != WL_CONNECTED)
     {
